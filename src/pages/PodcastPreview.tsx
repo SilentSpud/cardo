@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import appIcon from '../../src-tauri/icons/icon.png'
 import { sanitizeHTML } from '../utils/sanitize'
-import { showMenu } from 'tauri-plugin-context-menu'
+import showMenu from '../utils/menu'
 import { useSync, useDB } from '../ContextProviders'
 
 const EPISODE_CARD_HEIGHT = 80 // min height
@@ -305,12 +305,14 @@ function PodcastPreview() {
           <div className="flex shrink-0 flex-col items-center gap-2">
             <div
               className="aspect-square h-40 cursor-pointer"
-              onContextMenu={() => {
+              onContextMenu={(evt) => {
                 showMenu({
+                  x: evt.clientX,
+                  y: evt.clientY,
                   items: [
                     {
-                      label: t('copy_feed_url'),
-                      event: copyFeedUrl,
+                      text: t('copy_feed_url'),
+                      action: copyFeedUrl,
                     },
                   ],
                 })

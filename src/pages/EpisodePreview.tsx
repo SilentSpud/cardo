@@ -8,7 +8,7 @@ import ProgressBar from '../components/ProgressBar'
 import appIcon from '../../src-tauri/icons/icon.png'
 import { useEpisode } from '../engines/Episode'
 import { sanitizeHTML } from '../utils/sanitize'
-import { showMenu } from 'tauri-plugin-context-menu'
+import showMenu from '../utils/menu'
 import { toast } from 'react-toastify'
 import { useDB } from '../ContextProviders'
 
@@ -82,14 +82,16 @@ function EpisodePreview() {
                   },
                 })
             }}
-            onContextMenu={() => {
+            onContextMenu={(evt) => {
               if (!podcastFetched) return
 
               showMenu({
+                x: evt.clientX,
+                y: evt.clientY,
                 items: [
                   {
-                    label: t('copy_episode_url'),
-                    event: copyEpisodeSrc,
+                    text: t('copy_episode_url'),
+                    action: copyEpisodeSrc,
                   },
                 ],
               })

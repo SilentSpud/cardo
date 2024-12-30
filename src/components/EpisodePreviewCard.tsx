@@ -6,7 +6,7 @@ import * as icons from '../Icons'
 import { useNavigate } from 'react-router-dom'
 import ProgressBar from './ProgressBar'
 import { useTranslation } from 'react-i18next'
-import { showMenu } from 'tauri-plugin-context-menu'
+import showMenu from '../utils/menu'
 import appIcon from '../../src-tauri/icons/icon.png'
 import { useEpisode } from '../engines/Episode'
 
@@ -18,20 +18,22 @@ export default function EpisodePreviewCard({ episode }: { episode: EpisodeData |
   return (
     <div
       className="amber-600 flex w-24 flex-shrink-0 cursor-pointer flex-col rounded-md transition-all duration-100 hover:p-[3px]"
-      onContextMenu={() => {
+      onContextMenu={(evt) => {
         showMenu({
+          x: evt.clientX,
+          y: evt.clientY,
           items: [
             {
-              label: t(reprState.complete ? 'mark_not_played' : 'mark_played'),
-              event: togglePlayed,
+              text: t(reprState.complete ? 'mark_not_played' : 'mark_played'),
+              action: togglePlayed,
             },
             {
-              label: t(inQueue ? 'remove_queue' : 'add_queue'),
-              event: toggleQueue,
+              text: t(inQueue ? 'remove_queue' : 'add_queue'),
+              action: toggleQueue,
             },
             {
-              label: t(downloadState === 'downloaded' ? 'remove_download' : 'download'),
-              event: toggleDownload,
+              text: t(downloadState === 'downloaded' ? 'remove_download' : 'download'),
+              action: toggleDownload,
             },
           ],
         })

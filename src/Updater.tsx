@@ -1,5 +1,5 @@
-import { checkUpdate, installUpdate } from '@tauri-apps/api/updater'
-import { relaunch } from '@tauri-apps/api/process'
+import { check, Update } from '@tauri-apps/plugin-updater'
+import { relaunch } from '@tauri-apps/plugin-process'
 import { useEffect, useRef, useState } from 'react'
 import { UnlistenFn } from '@tauri-apps/api/event'
 import { parse } from 'date-fns'
@@ -26,19 +26,19 @@ export default function Updater() {
 
   const checkUpdates = async () => {
     try {
-      const { shouldUpdate, manifest } = await checkUpdate()
+      const update = await check();
 
-      if (!manifest || !shouldUpdate) return
+      if (!update || !update.available || !update.date) return
 
-      const release_notes = manifest.body.replace(/^v\d.\d.\d\s*\n*/, '') // messages could start with vX.X.X (in github  appears as title)
+      const release_notes = update.body?.replace(/^v\d.\d.\d\s*\n*/, '') ?? '' // messages could start with vX.X.X (in github  appears as title)
 
       setDialog({
-        version: manifest.version,
+        version: update.version,
         releaseNotes: release_notes,
       })
 
       const formatString = 'yyyy-MM-dd HH:mm:ss.SSS xxxxx'
-      const releaseDate = parse(manifest.date, formatString, new Date())
+      const releaseDate = parse(update.date, formatString, new Date())
       const lastUpdate = await getLastUpdate()
 
       showBanner(releaseDate.getTime() > lastUpdate) // annoying dialog is shown only once, after that only the title bar icon appears
@@ -59,8 +59,12 @@ export default function Updater() {
         labels={[t('install'), t('later')]}
         onAccepted={async () => {
           try {
+            const newUpdate = await check()
+            if (!newUpdate) return
+            const update = new Update(newUpdate);
+
             // Install the update. This will also restart the app on Windows!
-            await installUpdate()
+            update.downloadAndInstall();
 
             // On macOS and Linux you will need to restart the app manually.
             // You could use this step to display another confirmation dialog.
