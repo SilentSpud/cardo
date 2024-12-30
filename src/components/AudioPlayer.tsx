@@ -5,12 +5,13 @@ import { EpisodeData } from '..'
 import { useNavigate } from 'react-router-dom'
 import { useSettings } from '../engines/Settings'
 import { useTranslation } from 'react-i18next'
-import { globalShortcut } from '@tauri-apps/api'
+import {  } from '@tauri-apps/api'
 import appIcon from '../../src-tauri/icons/icon.png'
-import { convertFileSrc } from '@tauri-apps/api/tauri'
+import { convertFileSrc } from '@tauri-apps/api/core'
 import round from 'lodash/round'
 import { RangeInput } from './Inputs'
 import { PlayerContext, useDB, usePlayer } from '../ContextProviders'
+import * as globalShortcut from "@tauri-apps/plugin-global-shortcut"
 
 export function AudioPlayerProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement>(null)
@@ -260,11 +261,11 @@ function AudioPlayer({ className = '' }) {
       globalShortcut.register('MediaPlayPause', handlePlayPause)
     }
 
-    if (!globalShortcut.isRegistered('MediaNextTrack')) {
-      globalShortcut.register('MediaNextTrack', () => playNextInQueue)
+    if (!globalShortcut.isRegistered('MediaTrackNext')) {
+      globalShortcut.register('MediaTrackNext', () => playNextInQueue)
     }
 
-    // MediaPreviousTrack
+    // MediaTrackPrevious
   }, [])
   // #endregion
 

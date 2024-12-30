@@ -1,20 +1,21 @@
-import { http } from '@tauri-apps/api'
+import {} from '@tauri-apps/api'
 import { GpodderUpdate, ProtocolFn, ServerGpodderUpdate, SubscriptionsUpdate } from '.'
+import * as http from '@tauri-apps/plugin-http'
+import { parse, stringify } from 'lossless-json'
 
 export async function login(url: string, user: string, password: string): Promise<boolean> {
   // just eturns true if login was successful
   const loginUrl = new URL(url)
   loginUrl.pathname = `api/2/auth/${user}/login.json`
 
-  const r = await http.fetch(loginUrl.href, {
+  const req = await http.fetch(loginUrl.href, {
     method: 'POST',
-    responseType: http.ResponseType.JSON,
     headers: {
       Authorization: 'Basic ' + btoa(user + ':' + password),
     },
   })
 
-  return r.ok
+  return req.ok
 }
 
 export const gpodderProtocol: ProtocolFn = function (creds) {
@@ -30,16 +31,17 @@ export const gpodderProtocol: ProtocolFn = function (creds) {
 
     url.searchParams.set('aggregated', 'true')
 
-    const r: { data: { actions: ServerGpodderUpdate[] } } = await http.fetch(url.href, {
+    const req = await http.fetch(url.href, {
       method: 'GET',
-      responseType: http.ResponseType.JSON,
       headers: {
         Authorization: 'Basic ' + btoa(user + ':' + password),
         'Content-Type': 'application/json',
       },
     })
 
-    return r.data.actions.map((update: ServerGpodderUpdate) => ({
+    const reqData = parse(await req.text()) as { actions: ServerGpodderUpdate[] }
+
+    return reqData.actions.map((update: ServerGpodderUpdate) => ({
       ...update,
       timestamp: new Date(update.timestamp).getTime(), //timestamp in epoch format (server is in utc ISO format)
     }))
@@ -55,16 +57,17 @@ export const gpodderProtocol: ProtocolFn = function (creds) {
       url.searchParams.set('since', since.toString())
     }
 
-    const r: { data: SubscriptionsUpdate } = await http.fetch(url.href, {
+    const req = await http.fetch(url.href, {
       method: 'GET',
-      responseType: http.ResponseType.JSON,
       headers: {
         Authorization: 'Basic ' + btoa(user + ':' + password),
         'Content-Type': 'application/json',
       },
     })
 
-    return r.data
+    const reqData = parse(await req.text()) as SubscriptionsUpdate
+
+    return reqData
   }
 
   async function pushEpisodes(updates: GpodderUpdate[]) {
@@ -73,23 +76,21 @@ export const gpodderProtocol: ProtocolFn = function (creds) {
     const url = new URL(server)
     url.pathname = `api/2/episodes/${user}.json`
 
-    const r = await http.fetch(url.href, {
+    const req = await http.fetch(url.href, {
       method: 'POST',
-      responseType: http.ResponseType.JSON,
       headers: {
         Authorization: 'Basic ' + btoa(user + ':' + password),
         'Content-Type': 'application/json',
       },
-      body: {
-        type: 'Json',
-        payload: updates.map((update) => ({
+      body: stringify(
+        updates.map((update) => ({
           ...update,
           timestamp: new Date(update.timestamp).toISOString(),
         })),
-      },
+      ),
     })
 
-    if (!r.ok) {
+    if (!req.ok) {
       throw Error('Failed pushing episodes to gpodder server')
     }
   }
@@ -100,20 +101,16 @@ export const gpodderProtocol: ProtocolFn = function (creds) {
     const url = new URL(server)
     url.pathname = `api/2/subscriptions/${user}/cardo.json`
 
-    const r = await http.fetch(url.href, {
+    const req = await http.fetch(url.href, {
       method: 'POST',
-      responseType: http.ResponseType.JSON,
       headers: {
         Authorization: 'Basic ' + btoa(user + ':' + password),
         'Content-Type': 'application/json',
       },
-      body: {
-        type: 'Json',
-        payload: updates,
-      },
+      body: stringify(updates),
     })
 
-    if (!r.ok) {
+    if (!req.ok) {
       throw Error('Failed pushing subscriptions to gpodder server')
     }
   }

@@ -1,8 +1,8 @@
-import { ResponseType, fetch as tauriFetch } from '@tauri-apps/api/http'
+import { fetch as tauriFetch } from '@tauri-apps/plugin-http'
 import { EpisodeData, PodcastData } from '..'
-import { createDir, exists, readTextFile, writeTextFile, removeFile, removeDir, readDir } from '@tauri-apps/api/fs'
+import { mkdir, exists, readTextFile, writeTextFile, remove, readDir } from '@tauri-apps/plugin-fs'
 import { appCacheDir, dirname, join } from '@tauri-apps/api/path'
-import { invoke } from '@tauri-apps/api'
+import { invoke } from '@tauri-apps/api/core'
 import { toast } from 'react-toastify'
 
 export function secondsToStr(seconds: number, alwaysShowHours = false) {
@@ -29,9 +29,9 @@ export function secondsToStr(seconds: number, alwaysShowHours = false) {
 export function strToSeconds(time: string) {
   const values = time.split(':')
 
-  if (values.length == 1) {
+  if (values.length === 1) {
     return Number(values[0])
-  } else if (values.length == 2) {
+  } else if (values.length === 2) {
     return Number(values[0]) * 60 + Number(values[1])
   } else {
     return Number(values[0]) * 3600 + Number(values[1]) * 60 + Number(values[2])
@@ -39,11 +39,9 @@ export function strToSeconds(time: string) {
 }
 
 async function downloadXml(url: string): Promise<string> {
-  const response = await tauriFetch(url, {
-    method: 'GET',
-    responseType: ResponseType.Text,
-  })
-  return response.data as string
+  const response = await tauriFetch(url)
+
+  return await response.text()
 }
 
 function getItunesTag(item: Element, tag: string) {
@@ -172,7 +170,7 @@ export function capitalize(str: string) {
 }
 
 function makeSafeFilename(name: string) {
-  return name.replace(/(\\)|(\/)|(\:)|(\*)|(\?)|(\")|(\<)|(\>)|(\|)/g, '')
+  return name.replace(/(\\)|(\/)|(:)|(\*)|(\?)|(")|(<)|(>)|(\|)/g, '')
 }
 
 export async function downloadEpisode(episode: EpisodeData) {
@@ -190,7 +188,7 @@ export async function downloadEpisode(episode: EpisodeData) {
   const destination = await join(destFolder, filename)
 
   if (!(await exists(destFolder))) {
-    await createDir(destFolder, { recursive: true })
+    await mkdir(destFolder, { recursive: true })
   }
 
   await invoke('download_file', { url: episode.src, destination, name: episode.title })
@@ -199,13 +197,13 @@ export async function downloadEpisode(episode: EpisodeData) {
 }
 
 export async function removeDownloadedEpisode(localFile: string) {
-  await removeFile(localFile)
+  await remove(localFile)
 
   const podcastDir = await dirname(localFile)
   const downloadedPodcasts = await readDir(podcastDir)
 
-  if (downloadedPodcasts.length == 0) {
-    removeDir(podcastDir)
+  if (downloadedPodcasts.length === 0) {
+    remove(podcastDir, { recursive: true })
   }
 }
 

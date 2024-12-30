@@ -5,12 +5,13 @@ import { useEffect, useState } from 'react'
 import { TailwindBaseColor } from '..'
 import { DefaultTheme, DefaultThemes, BasicColors } from '../DefaultThemes'
 import appIcon from '../../src-tauri/icons/icon.png'
-import { shell } from '@tauri-apps/api'
+import {  } from '@tauri-apps/api'
 import { appConfigDir, join, resolveResource } from '@tauri-apps/api/path'
-import { readDir } from '@tauri-apps/api/fs'
+import { readDir } from '@tauri-apps/plugin-fs'
 import tauriConfig from '../../src-tauri/tauri.conf.json'
 import { useModalBanner } from '../components/ModalBanner'
 import { SyncSettings } from '../components/sync/SyncSettings'
+import * as shell from "@tauri-apps/plugin-shell"
 
 function AccentColorSelector() {
   const [
@@ -238,7 +239,7 @@ function Settings() {
           <img alt="" className="w-36 cursor-pointer transition-all hover:p-2" title={t('open_web')} src={appIcon} onClick={() => shell.open('https://cardo-podcast.github.io')} />
           <div className="flex flex-col justify-between">
             <h1 className="UPPERCASE">
-              Cardo - {t('podcast_player')} (v{tauriConfig.package.version})
+              Cardo - {t('podcast_player')} (v{tauriConfig.version})
             </h1>
             <h1>{t('author')}: n0vella</h1>
             <div className="flex h-fit items-center gap-1">
