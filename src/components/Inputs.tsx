@@ -1,6 +1,6 @@
+import { DndContext, Modifier, useDraggable } from '@dnd-kit/core'
 import { useEffect, useRef, useState } from 'react'
 import { secondsToStr, strToSeconds } from '../utils/utils'
-import { DndContext, Modifier, useDraggable } from '@dnd-kit/core'
 
 export enum SwitchState {
   False,

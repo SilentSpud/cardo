@@ -1,6 +1,6 @@
 import { SyntheticEvent } from 'react'
-import { PodcastData } from '..'
 import { useNavigate } from 'react-router-dom'
+import { PodcastData } from '..'
 import appIcon from '../../src-tauri/icons/icon.png'
 
 function PodcastCard({ podcast }: { podcast: PodcastData }) {
@@ -8,7 +8,7 @@ function PodcastCard({ podcast }: { podcast: PodcastData }) {
 
   return (
     <div
-      className="flex gap-2 min-h-20 cursor-pointer justify-between border-b-2 border-primary-8 p-2 transition-colors hover:bg-primary-8"
+      className="flex min-h-20 cursor-pointer justify-between gap-2 border-b-2 border-primary-8 p-2 transition-colors hover:bg-primary-8"
       onClick={() => {
         navigate('/preview', {
           state: {

@@ -1,9 +1,9 @@
-import { useCallback } from 'react'
 import Database from '@tauri-apps/plugin-sql'
+import { parse, stringify } from 'lossless-json'
+import { useCallback } from 'react'
 import { EpisodeData } from '..'
 
 export function useMisc(db: Database) {
-
   // #region COMMON INTERNAL FUNCTIONS
   const getMiscKey = async (key: string): Promise<string | undefined> => {
     const r: { value: string }[] = await db.select(
@@ -65,11 +65,11 @@ export function useMisc(db: Database) {
         WHERE description = "lastPlaying"`,
       )
       if (r.length > 0) {
-        if (r[0].value == 'NONE') {
+        if (r[0].value === 'NONE') {
           return
         }
 
-        const parsedEpisode: EpisodeData = JSON.parse(r[0].value)
+        const parsedEpisode = parse(r[0].value) as EpisodeData
 
         return {
           ...parsedEpisode,
@@ -84,7 +84,7 @@ export function useMisc(db: Database) {
     async function (playingEpisode?: EpisodeData) {
       // empty args to set NONE as last played
 
-      const data = playingEpisode ? JSON.stringify(playingEpisode) : 'NONE'
+      const data = playingEpisode ? (stringify(playingEpisode) as string) : 'NONE'
 
       return await setMiscValue('lastPlaying', data)
     },

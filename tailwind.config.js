@@ -1,7 +1,7 @@
-/** @type {import('tailwindcss').Config} */
-
+/* eslint-disable import/no-anonymous-default-export */
 import colors, { black, neutral } from 'tailwindcss/colors'
 
+/** @type {import('tailwindcss').Config} */
 export default {
   content: [
     "./index.html",

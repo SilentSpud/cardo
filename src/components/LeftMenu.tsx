@@ -1,12 +1,12 @@
-import { NavLink, useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { sync, home, settings, queue, download } from '../Icons'
-import SubscriptionCard from './SubscriptionCard'
-import { useSettings } from '../engines/Settings'
-import { useModalBanner } from './ModalBanner'
-import { parsePodcastDetails, toastError } from '../utils/utils'
 import { useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useDB, useSync } from '../ContextProviders'
+import { useSettings } from '../engines/Settings'
+import { download, home, queue, settings, sync } from '../Icons'
+import { parsePodcastDetails, toastError } from '../utils/utils'
+import { useModalBanner } from './ModalBanner'
+import SubscriptionCard from './SubscriptionCard'
 
 function NewSubscriptionButton({ mini = false }: { mini?: boolean }) {
   const { t } = useTranslation()

@@ -1,14 +1,14 @@
-import {  } from '@tauri-apps/api'
-import { createContext, ReactNode, useContext, useEffect, useRef, useState } from 'react'
 import { appConfigDir, join } from '@tauri-apps/api/path'
 import { readTextFile, writeTextFile } from '@tauri-apps/plugin-fs'
-import { RecursivePartial, Settings, SortCriterion, TailwindBaseColor, ColorTheme } from '..'
-import { SwitchState } from '../components/Inputs'
-import { changeLanguage } from './translations'
+import * as os from '@tauri-apps/plugin-os'
 import merge from 'lodash/merge'
+import { parse, stringify } from 'lossless-json'
+import { createContext, ReactNode, useContext, useEffect, useRef, useState } from 'react'
 import colors from 'tailwindcss/colors'
+import { ColorTheme, RecursivePartial, Settings, SortCriterion, TailwindBaseColor } from '..'
+import { SwitchState } from '../components/Inputs'
 import { DefaultTheme, DefaultThemes } from '../DefaultThemes'
-import * as os from "@tauri-apps/plugin-os"
+import { changeLanguage } from './translations'
 
 type DurationFilter = {
   min: number
@@ -39,7 +39,7 @@ export class PodcastSettings {
   }
 
   public static isDefault = (settings: PodcastSettings) => {
-    return JSON.stringify(settings) === JSON.stringify(new PodcastSettings())
+    return stringify(settings) === stringify(new PodcastSettings())
   }
 }
 
@@ -186,7 +186,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
   const readSettingsFromFile = async (): Promise<Settings | undefined> => {
     try {
-      return JSON.parse(await readTextFile(settingsFile.current))
+      return parse(await readTextFile(settingsFile.current)) as Settings
     } catch {
       return undefined
     }
@@ -195,7 +195,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const writeSettingsFile = async (newSettings: Settings) => {
     if (!settingsFile.current) return
 
-    writeTextFile(settingsFile.current, JSON.stringify(newSettings, null, 2))
+    writeTextFile(settingsFile.current, stringify(newSettings, null, 2) as string)
   }
 
   const setOSInfo = async () => {

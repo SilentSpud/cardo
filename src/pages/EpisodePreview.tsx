@@ -1,16 +1,16 @@
 import { SyntheticEvent, useEffect, useState } from 'react'
-import * as icons from '../Icons'
-import { EpisodeData } from '..'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { parsePodcastDetails, secondsToStr } from '../utils/utils'
 import { useTranslation } from 'react-i18next'
-import ProgressBar from '../components/ProgressBar'
-import appIcon from '../../src-tauri/icons/icon.png'
-import { useEpisode } from '../engines/Episode'
-import { sanitizeHTML } from '../utils/sanitize'
-import showMenu from '../utils/menu'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { EpisodeData } from '..'
+import appIcon from '../../src-tauri/icons/icon.png'
+import ProgressBar from '../components/ProgressBar'
 import { useDB } from '../ContextProviders'
+import { useEpisode } from '../engines/Episode'
+import * as icons from '../Icons'
+import showMenu from '../utils/menu'
+import { sanitizeHTML } from '../utils/sanitize'
+import { parsePodcastDetails, secondsToStr } from '../utils/utils'
 
 function EpisodePreview() {
   const location = useLocation()
@@ -119,7 +119,7 @@ function EpisodePreview() {
             <button className={`w-7 hover:text-accent-6 ${inQueue && 'text-primary-7'}`} title={inQueue ? t('remove_queue') : t('add_queue')} onClick={toggleQueue}>
               {icons.queue}
             </button>
-            <button className={`w-7 hover:text-accent-6 ${downloadState == 'downloaded' && 'text-primary-7'}`} onClick={toggleDownload}>
+            <button className={`w-7 hover:text-accent-6 ${downloadState === 'downloaded' && 'text-primary-7'}`} onClick={toggleDownload}>
               {icons.download}
             </button>
           </div>

@@ -1,8 +1,8 @@
 import Database from '@tauri-apps/plugin-sql'
-import { EpisodeData, NewEpisodeData, PodcastData } from '..'
 import { useCallback, useEffect, useState } from 'react'
-import { getPodcastSettings, useSettings } from '../engines/Settings'
 import { DB } from '.'
+import { EpisodeData, NewEpisodeData, PodcastData } from '..'
+import { getPodcastSettings, useSettings } from '../engines/Settings'
 import { downloadEpisode } from '../utils/utils'
 
 export function useSubscriptions(db: Database, subscriptionsEpisodes: DB['subscriptionsEpisodes'], downloads: DB['downloads'], queue: DB['queue']) {

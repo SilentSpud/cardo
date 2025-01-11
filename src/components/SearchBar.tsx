@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import { SearchPodcast } from '../engines/search/base'
-import { EpisodeData, PodcastData } from '..'
-import PodcastCard from './PodcastCard'
 import { useTranslation } from 'react-i18next'
-import { arrowLeft, arrowRight } from '../Icons'
 import { useLocation, useNavigate } from 'react-router-dom'
-import EpisodeCard from './EpisodeCard'
+import { EpisodeData, PodcastData } from '..'
 import { useDB } from '../ContextProviders'
+import { SearchPodcast } from '../engines/search/base'
+import { arrowLeft, arrowRight } from '../Icons'
+import EpisodeCard from './EpisodeCard'
+import PodcastCard from './PodcastCard'
 
 function SearchBar() {
   const [results, setResults] = useState<PodcastData[] | EpisodeData[]>([])
@@ -169,7 +169,7 @@ function SearchBar() {
           <div className="absolute left-0 top-0 z-10 mt-10 h-screen w-screen" onClick={() => setResults([])} />
 
           <div className="absolute left-1/2 top-0 z-30 mt-[32px] max-h-[60dvh] w-4/5 -translate-x-1/2 justify-center overflow-hidden overflow-y-auto scroll-smooth rounded-b-md border-x-2 border-primary-8 bg-primary-9 shadow-md shadow-primary-8" ref={resultsRef}>
-            <div className="flex flex-col w-full">
+            <div className="flex w-full flex-col">
               {results.map((result, i) => {
                 if (searchMode === 'podcasts') {
                   return <PodcastCard key={i} podcast={result as PodcastData} />

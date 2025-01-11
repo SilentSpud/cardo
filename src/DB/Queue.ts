@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from 'react'
 import Database from '@tauri-apps/plugin-sql'
+import { parse, stringify } from 'lossless-json'
+import { useCallback, useEffect, useState } from 'react'
 import { EpisodeData, RawEpisodeData } from '..'
 
 export function useQueue(db: Database) {
@@ -52,7 +53,7 @@ export function useQueue(db: Database) {
       WHERE description = 'queueOrder'
       `)
 
-    return query.length > 0 ? JSON.parse(query[0].value) : []
+    return query.length > 0 ? (parse(query[0].value) as number[]) : []
   }
 
   const updateOrder = async (newOrder: number[]) => {
@@ -63,7 +64,7 @@ export function useQueue(db: Database) {
       SET value = $1
       WHERE description = 'queueOrder'
       `,
-      [JSON.stringify(newOrder)],
+      [stringify(newOrder) as string],
     )
   }
 
@@ -82,7 +83,7 @@ export function useQueue(db: Database) {
   }
 
   const indexOf = (episodeSrc: string) => {
-    return queue.findIndex((episode) => episode.src == episodeSrc)
+    return queue.findIndex((episode) => episode.src === episodeSrc)
   }
 
   // #endregion
@@ -124,7 +125,7 @@ export function useQueue(db: Database) {
 
   const next = useCallback(
     function (episode: EpisodeData) {
-      const nextIndex = queue.findIndex((ep) => ep.id == episode.id) + 1
+      const nextIndex = queue.findIndex((ep) => ep.id === episode.id) + 1
       return queue[nextIndex]
     },
     [queue],
@@ -133,7 +134,7 @@ export function useQueue(db: Database) {
   const remove = useCallback(
     async function (episodeSrc: string) {
       // delete from queue
-      setQueue((prev) => prev.filter((episode) => episode.src != episodeSrc))
+      setQueue((prev) => prev.filter((episode) => episode.src !== episodeSrc))
 
       await db.execute('DELETE FROM queue WHERE src = $1', [episodeSrc])
     },

@@ -1,7 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { grip } from '../Icons'
 import { ReactNode } from 'react'
+import { grip } from '../Icons'
 
 export default function SortEpisodeGrip({ id, children }: { id: number; children: ReactNode }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: id })

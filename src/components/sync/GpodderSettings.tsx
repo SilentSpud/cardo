@@ -1,8 +1,8 @@
-import { useTranslation } from 'react-i18next'
-import { saveCreds, toastError } from '../../utils/utils'
-import { useDB, useSync } from '../../ContextProviders'
 import { invoke } from '@tauri-apps/api/core'
+import { useTranslation } from 'react-i18next'
+import { useDB, useSync } from '../../ContextProviders'
 import { login } from '../../sync/Gpodder'
+import { saveCreds, toastError } from '../../utils/utils'
 
 export function GpodderSettings() {
   const { t } = useTranslation()

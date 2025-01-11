@@ -1,11 +1,11 @@
-import appIcon from '../../src-tauri/icons/icon.png'
 import { SyntheticEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import showMenu from '../utils/menu'
 import { PodcastData } from '..'
-import { sync } from '../Icons'
+import appIcon from '../../src-tauri/icons/icon.png'
 import { useDB } from '../ContextProviders'
+import { sync } from '../Icons'
+import showMenu from '../utils/menu'
 
 export default function SubscriptionCard({ podcast, mini = false }: { podcast: PodcastData; mini?: boolean }) {
   const navigate = useNavigate()

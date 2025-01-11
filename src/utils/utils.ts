@@ -1,9 +1,10 @@
-import { fetch as tauriFetch } from '@tauri-apps/plugin-http'
-import { EpisodeData, PodcastData } from '..'
-import { mkdir, exists, readTextFile, writeTextFile, remove, readDir } from '@tauri-apps/plugin-fs'
-import { appCacheDir, dirname, join } from '@tauri-apps/api/path'
 import { invoke } from '@tauri-apps/api/core'
+import { appCacheDir, dirname, join } from '@tauri-apps/api/path'
+import { exists, mkdir, readDir, readTextFile, remove, writeTextFile } from '@tauri-apps/plugin-fs'
+import { fetch as tauriFetch } from '@tauri-apps/plugin-http'
+import { parse, stringify } from 'lossless-json'
 import { toast } from 'react-toastify'
+import { EpisodeData, PodcastData } from '..'
 
 export function secondsToStr(seconds: number, alwaysShowHours = false) {
   const negative = seconds < 0
@@ -122,7 +123,7 @@ export async function getAllCreds(): Promise<any | undefined> {
   if (!(await exists(file))) return
 
   try {
-    const data = JSON.parse(await readTextFile(file))
+    const data = parse(await readTextFile(file))
     return data
   } catch {
     return {}
@@ -148,7 +149,7 @@ export async function saveCreds(name: string, value: any) {
 
   data[name] = value
 
-  await writeTextFile(file, JSON.stringify(data))
+  await writeTextFile(file, stringify(data) as string)
 }
 
 export async function removeCreds(name: string) {
@@ -162,7 +163,7 @@ export async function removeCreds(name: string) {
   data = await getAllCreds()
   delete data[name]
 
-  await writeTextFile(file, JSON.stringify(data))
+  await writeTextFile(file, stringify(data) as string)
 }
 
 export function capitalize(str: string) {

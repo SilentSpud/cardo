@@ -1,10 +1,10 @@
-import EpisodeCard from '../components/EpisodeCard'
-import { EpisodeData } from '..'
-import { capitalize, parsePodcastDetails, removeDownloadedEpisode } from '../utils/utils'
-import { useNavigate } from 'react-router-dom'
 import { Suspense, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+import { EpisodeData } from '..'
+import EpisodeCard from '../components/EpisodeCard'
 import { useDB } from '../ContextProviders'
+import { capitalize, parsePodcastDetails, removeDownloadedEpisode } from '../utils/utils'
 
 export default function DownloadsPage() {
   const {
@@ -26,8 +26,8 @@ export default function DownloadsPage() {
   }
 
   useEffect(() => {
-    // asynchronously fetch podcast data to allow loadig podcast page clicking on cover
-    downloads.map((episode) => {
+    // asynchronously fetch podcast data to allow loading podcast page clicking on cover
+    downloads.forEach((episode) => {
       fetchPodcastData(episode)
     })
 

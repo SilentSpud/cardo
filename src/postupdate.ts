@@ -1,6 +1,7 @@
 import { appConfigDir, join } from '@tauri-apps/api/path'
-import config from '../src-tauri/tauri.conf.json'
 import { exists, readTextFile, writeTextFile } from '@tauri-apps/plugin-fs'
+import { parse, stringify } from 'lossless-json'
+import config from '../src-tauri/tauri.conf.json'
 
 // migrations in ascending order
 const migrations: { [version: string]: () => Promise<void> } = {
@@ -13,7 +14,7 @@ export async function postupdate() {
   const updatesFile = await join(await appConfigDir(), 'updates.json')
   const version = config.version
 
-  const appliedUpdates: string[] = (await exists(updatesFile)) ? JSON.parse(await readTextFile(updatesFile)) : []
+  const appliedUpdates: string[] = (await exists(updatesFile)) ? (parse(await readTextFile(updatesFile)) as string[]) : []
 
   if (appliedUpdates.includes(version)) return // this is not the first time this version runs, just open the app
 
@@ -30,5 +31,5 @@ export async function postupdate() {
     appliedUpdates.push(version)
   }
 
-  await writeTextFile(updatesFile, JSON.stringify(appliedUpdates))
+  await writeTextFile(updatesFile, stringify(appliedUpdates) as string)
 }

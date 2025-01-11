@@ -1,11 +1,11 @@
-import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
-import * as icons from '../Icons'
-import { useEffect, useRef, useState } from 'react'
 import { UnlistenFn } from '@tauri-apps/api/event'
+import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
+import { useEffect, useRef, useState } from 'react'
+import { usePlayer, useSync } from '../ContextProviders'
 import { useSettings } from '../engines/Settings'
+import * as icons from '../Icons'
 import Updater from '../Updater'
 import DownloadsIndicator from './DownloadsIndicator'
-import { usePlayer, useSync } from '../ContextProviders'
 import { SyncButton } from './sync/SyncButton'
 const appWindow = getCurrentWebviewWindow()
 

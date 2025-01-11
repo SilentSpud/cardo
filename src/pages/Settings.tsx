@@ -1,17 +1,16 @@
-import { useTranslation } from 'react-i18next'
-import { Checkbox } from '../components/Inputs'
-import { getColor, useSettings } from '../engines/Settings'
-import { useEffect, useState } from 'react'
-import { TailwindBaseColor } from '..'
-import { DefaultTheme, DefaultThemes, BasicColors } from '../DefaultThemes'
-import appIcon from '../../src-tauri/icons/icon.png'
-import {  } from '@tauri-apps/api'
 import { appConfigDir, join, resolveResource } from '@tauri-apps/api/path'
 import { readDir } from '@tauri-apps/plugin-fs'
+import * as shell from '@tauri-apps/plugin-shell'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { TailwindBaseColor } from '..'
+import appIcon from '../../src-tauri/icons/icon.png'
 import tauriConfig from '../../src-tauri/tauri.conf.json'
+import { Checkbox } from '../components/Inputs'
 import { useModalBanner } from '../components/ModalBanner'
 import { SyncSettings } from '../components/sync/SyncSettings'
-import * as shell from "@tauri-apps/plugin-shell"
+import { BasicColors, DefaultTheme, DefaultThemes } from '../DefaultThemes'
+import { getColor, useSettings } from '../engines/Settings'
 
 function AccentColorSelector() {
   const [
@@ -119,34 +118,34 @@ function Settings() {
             {t('check_updates')}:
             <Checkbox defaultChecked={general.checkUpdates} onChange={(value) => updateSettings({ general: { checkUpdates: value } })} />
           </label>
+        </div>
+      </div>
 
-          <div className="border-t-2 border-primary-8">
-            <h2 className="mt-1 uppercase">{t('theme')}</h2>
-            <div className="flex gap-10">
-              <label className="flex items-center gap-2 uppercase">
-                {t('base')}:
-                <select
-                  className="rounded-md bg-primary-8 px-2 py-[1px] text-center outline-none"
-                  onChange={({ target: { value } }) =>
-                    updateSettings({
-                      colors: {
-                        primary: value as TailwindBaseColor | DefaultTheme,
-                      },
-                    })
-                  }
-                  defaultValue={(colorSettings.primary as string) in DefaultThemes || BasicColors.includes(colorSettings.primary as TailwindBaseColor) ? (colorSettings.primary as string) : 'CUSTOM'}
-                >
-                  <option value="dark">DARK</option>
-                  <option value="light">LIGHT</option>
-                  <option value="slate">SLATE</option>
-                </select>
-              </label>
-              <label className="flex items-center gap-2 uppercase">
-                {t('accent')}:
-                <AccentColorSelector />
-              </label>
-            </div>
-          </div>
+      <div className="flex flex-col gap-1 rounded-md border-[2px] border-primary-8 p-2">
+        <h1 className="mb-2 border-b-2 border-primary-8 uppercase">{t('theme')}</h1>
+        <div className="flex gap-10">
+          <label className="flex items-center gap-2 uppercase">
+            {t('base')}:
+            <select
+              className="rounded-md bg-primary-8 px-2 py-[1px] text-center outline-none"
+              onChange={({ target: { value } }) =>
+                updateSettings({
+                  colors: {
+                    primary: value as TailwindBaseColor | DefaultTheme,
+                  },
+                })
+              }
+              defaultValue={(colorSettings.primary as string) in DefaultThemes || BasicColors.includes(colorSettings.primary as TailwindBaseColor) ? (colorSettings.primary as string) : 'CUSTOM'}
+            >
+              <option value="dark">DARK</option>
+              <option value="light">LIGHT</option>
+              <option value="slate">SLATE</option>
+            </select>
+          </label>
+          <label className="flex items-center gap-2 uppercase">
+            {t('accent')}:
+            <AccentColorSelector />
+          </label>
         </div>
       </div>
 

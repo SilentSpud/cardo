@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { EpisodeData } from '..'
-import { useSettings } from './Settings'
-import { downloadEpisode, removeDownloadedEpisode } from '../utils/utils'
 import { useDB, usePlayer } from '../ContextProviders'
+import { downloadEpisode, removeDownloadedEpisode } from '../utils/utils'
+import { useSettings } from './Settings'
 
 export function useEpisode(episode: EpisodeData) {
   const { queue, history, downloads } = useDB()

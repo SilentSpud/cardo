@@ -1,6 +1,6 @@
+import { SyntheticEvent } from 'react'
 import { PodcastData } from '..'
 import appIcon from '../../src-tauri/icons/icon.png'
-import { SyntheticEvent } from 'react'
 
 function PodcastPreview({ result }: { result: PodcastData }) {
   return (

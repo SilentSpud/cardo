@@ -44,7 +44,7 @@ export default function DownloadsIndicator() {
     return () => unlisten.current && unlisten.current()
   }, [])
 
-  if (progress == 0) return <></>
+  if (progress === 0) return <></>
 
   return (
     <div className="group relative h-6 w-6">

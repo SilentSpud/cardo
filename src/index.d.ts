@@ -1,6 +1,6 @@
+import { DefaultTheme } from './DefaultThemes'
 import { PodcastSettings } from './engines/Settings'
 import { TailwindColor } from './ThemeConfigurator'
-import { DefaultTheme } from './DefaultThemes'
 
 export interface DownloadPayload {
   src: string

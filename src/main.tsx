@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import './main.css'
 import './engines/translations'
+import './main.css'
 import { postupdate } from './postupdate'
 
 postupdate().then(() => {

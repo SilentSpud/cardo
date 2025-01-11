@@ -1,14 +1,13 @@
+import { appDataDir, join } from '@tauri-apps/api/path'
 import Database from '@tauri-apps/plugin-sql'
-import { join, appDataDir } from '@tauri-apps/api/path'
-import {ReactNode, useEffect, useState } from 'react'
-import { useSubscriptions } from './Subscriptions'
-import { useSubscriptionsEpisodes } from './SubscriptionsEpisodes'
+import { ReactNode, useEffect, useState } from 'react'
+import { DBContext } from '../ContextProviders'
+import { useDownloads } from './Downloads'
 import { useEpisodeState } from './EpisodeState'
 import { useMisc } from './Misc'
 import { useQueue } from './Queue'
-import { useDownloads } from './Downloads'
-import { DBContext } from '../ContextProviders'
-
+import { useSubscriptions } from './Subscriptions'
+import { useSubscriptionsEpisodes } from './SubscriptionsEpisodes'
 
 export function DBProvider({ children }: { children: ReactNode }) {
   // provider containing groups of variables / methods related to database
@@ -35,7 +34,6 @@ export function DBProvider({ children }: { children: ReactNode }) {
     // all elements that depends of DB aren't initialized till db is loaded
     return <></>
   }
-
 
   return <DBContext.Provider value={{ dbLoaded, subscriptions, subscriptionsEpisodes, history, misc, queue, downloads }}>{children}</DBContext.Provider>
 }

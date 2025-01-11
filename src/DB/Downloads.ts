@@ -1,6 +1,6 @@
+import Database from '@tauri-apps/plugin-sql'
 import { useCallback, useEffect, useState } from 'react'
 import { EpisodeData } from '..'
-import Database from '@tauri-apps/plugin-sql'
 
 // #region DOWNLOADS
 type DownloadedEpisode = EpisodeData & { localFile: string }
@@ -17,7 +17,7 @@ export function useDownloads(db: Database) {
 
   const indexOf = useCallback(
     function (episodeSrc: string) {
-      return downloads.findIndex((episode) => episode.src == episodeSrc)
+      return downloads.findIndex((episode) => episode.src === episodeSrc)
     },
     [downloads],
   )
@@ -80,7 +80,7 @@ export function useDownloads(db: Database) {
 
   const removeFromDownloadList = useCallback(
     async function (episodeSrc: string) {
-      setDownloads((prev) => prev.filter((episode) => episode.src != episodeSrc))
+      setDownloads((prev) => prev.filter((episode) => episode.src !== episodeSrc))
 
       return await db.execute('DELETE FROM downloads WHERE src = $1', [episodeSrc])
     },

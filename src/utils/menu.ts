@@ -1,4 +1,4 @@
-import { menu, dpi } from '@tauri-apps/api'
+import { dpi, menu } from '@tauri-apps/api'
 
 type MenuConfig = {
   x: number

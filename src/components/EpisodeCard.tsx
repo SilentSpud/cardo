@@ -1,13 +1,13 @@
 import { MouseEventHandler, SyntheticEvent, useRef } from 'react'
-import { EpisodeData } from '..'
-import * as icons from '../Icons'
-import { useNavigate } from 'react-router-dom'
-import { secondsToStr } from '../utils/utils'
-import ProgressBar from './ProgressBar'
 import { useTranslation } from 'react-i18next'
-import showMenu from '../utils/menu'
+import { useNavigate } from 'react-router-dom'
+import { EpisodeData } from '..'
 import appIcon from '../../src-tauri/icons/icon.png'
 import { useEpisode } from '../engines/Episode'
+import * as icons from '../Icons'
+import showMenu from '../utils/menu'
+import { secondsToStr } from '../utils/utils'
+import ProgressBar from './ProgressBar'
 
 function EpisodeCard({ episode, className = '', onImageClick = undefined, onClick = undefined }: { episode: EpisodeData; className?: string; onImageClick?: MouseEventHandler<HTMLImageElement>; onClick?: () => void }) {
   const navigate = useNavigate()
@@ -50,7 +50,7 @@ function EpisodeCard({ episode, className = '', onImageClick = undefined, onClic
       }}
     >
       <>
-        <div className="aspect-square h-16 rounded-md bg-primary-8 flex items-center justify-center">
+        <div className="flex aspect-square h-16 items-center justify-center rounded-md bg-primary-8">
           <img
             className={`rounded-md ${onImageClick !== undefined ? 'cursor-pointer hover:p-0.5' : ''}`}
             onClick={onImageClick}

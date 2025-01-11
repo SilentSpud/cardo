@@ -1,7 +1,6 @@
-import {} from '@tauri-apps/api'
-import { GpodderUpdate, ProtocolFn, ServerGpodderUpdate, SubscriptionsUpdate } from '.'
 import * as http from '@tauri-apps/plugin-http'
 import { parse, stringify } from 'lossless-json'
+import { GpodderUpdate, ProtocolFn, ServerGpodderUpdate, SubscriptionsUpdate } from '.'
 
 export async function login(url: string, user: string, password: string): Promise<boolean> {
   // just eturns true if login was successful

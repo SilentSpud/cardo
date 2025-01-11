@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next'
+import { useSync } from '../../ContextProviders'
 import { useSettings } from '../../engines/Settings'
 import { removeCreds } from '../../utils/utils'
-import { NextcloudSettings } from './NextcloudSettings'
 import { Checkbox } from '../Inputs'
-import { useSync } from '../../ContextProviders'
 import { GpodderSettings } from './GpodderSettings'
+import { NextcloudSettings } from './NextcloudSettings'
 
 export function SyncSettings() {
   const [{ sync: syncSettings }, updateSettings] = useSettings()

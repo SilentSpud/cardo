@@ -1,9 +1,9 @@
+import { invoke } from '@tauri-apps/api/core'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDB, useSync } from '../../ContextProviders'
 import { login } from '../../sync/Nextcloud'
 import { saveCreds, toastError } from '../../utils/utils'
-import { useDB, useSync } from '../../ContextProviders'
-import { invoke } from '@tauri-apps/api/core'
 
 export function NextcloudSettings() {
   const interval = useRef(0)

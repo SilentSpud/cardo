@@ -1,11 +1,11 @@
-import { useSettings } from '../engines/Settings'
-import { getCreds, parsePodcastDetails } from '../utils/utils'
+import { invoke } from '@tauri-apps/api/core'
 import { useEffect, useRef, useState } from 'react'
 import { Credentials, GpodderUpdate, ProtocolFn, SubscriptionsUpdate, SyncProtocol, SyncStatus } from '.'
 import { SyncContext, useDB, usePlayer } from '../ContextProviders'
-import { invoke } from '@tauri-apps/api/core'
-import { nextcloudProtocol } from './Nextcloud'
+import { useSettings } from '../engines/Settings'
+import { getCreds, parsePodcastDetails } from '../utils/utils'
 import { gpodderProtocol } from './Gpodder'
+import { nextcloudProtocol } from './Nextcloud'
 
 export function SyncProvider({ children }: { children: React.ReactNode }) {
   const [status, setStatus] = useState<SyncStatus>('standby')

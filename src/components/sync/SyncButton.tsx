@@ -1,10 +1,7 @@
-import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
-import { toast } from "react-toastify"
-import { useSync } from "../../ContextProviders"
-
-
-
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { useSync } from '../../ContextProviders'
 
 export function SyncButton() {
   const { t } = useTranslation()
@@ -26,7 +23,6 @@ export function SyncButton() {
       navigate('/settings')
       return
     }
-
 
     status !== 'synchronizing' && sync()
   }

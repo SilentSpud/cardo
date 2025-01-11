@@ -1,12 +1,12 @@
-import { check, Update } from '@tauri-apps/plugin-updater'
-import { relaunch } from '@tauri-apps/plugin-process'
-import { useEffect, useRef, useState } from 'react'
 import { UnlistenFn } from '@tauri-apps/api/event'
+import { relaunch } from '@tauri-apps/plugin-process'
+import { check, Update } from '@tauri-apps/plugin-updater'
 import { parse } from 'date-fns'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { upArrow } from './Icons'
 import { useModalBanner } from './components/ModalBanner'
 import { useDB } from './ContextProviders'
+import { upArrow } from './Icons'
 
 export default function Updater() {
   const unlistenCeckUpdates = useRef<UnlistenFn>()
@@ -26,7 +26,7 @@ export default function Updater() {
 
   const checkUpdates = async () => {
     try {
-      const update = await check();
+      const update = await check()
 
       if (!update || !update.available || !update.date) return
 
@@ -61,10 +61,10 @@ export default function Updater() {
           try {
             const newUpdate = await check()
             if (!newUpdate) return
-            const update = new Update(newUpdate);
+            const update = new Update(newUpdate)
 
             // Install the update. This will also restart the app on Windows!
-            update.downloadAndInstall();
+            update.downloadAndInstall()
 
             // On macOS and Linux you will need to restart the app manually.
             // You could use this step to display another confirmation dialog.

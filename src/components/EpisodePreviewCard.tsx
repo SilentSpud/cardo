@@ -1,14 +1,14 @@
 /*Compact variation of EpisodeCard */
 
 import { SyntheticEvent } from 'react'
-import { EpisodeData, NewEpisodeData } from '..'
-import * as icons from '../Icons'
-import { useNavigate } from 'react-router-dom'
-import ProgressBar from './ProgressBar'
 import { useTranslation } from 'react-i18next'
-import showMenu from '../utils/menu'
+import { useNavigate } from 'react-router-dom'
+import { EpisodeData, NewEpisodeData } from '..'
 import appIcon from '../../src-tauri/icons/icon.png'
 import { useEpisode } from '../engines/Episode'
+import * as icons from '../Icons'
+import showMenu from '../utils/menu'
+import ProgressBar from './ProgressBar'
 
 export default function EpisodePreviewCard({ episode }: { episode: EpisodeData | NewEpisodeData }) {
   const navigate = useNavigate()

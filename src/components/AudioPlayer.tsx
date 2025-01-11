@@ -1,17 +1,16 @@
-import { useRef, useEffect, useState, RefObject, ReactNode, useCallback, SyntheticEvent } from 'react'
-import { secondsToStr } from '../utils/utils'
-import { play as playIcon, pause as pauseIcon, forward as forwardIcon, backwards as backwardsIcon, close as closeIcon, speedometer, volume as volumeIcon, mute as muteIcon } from '../Icons'
-import { EpisodeData } from '..'
-import { useNavigate } from 'react-router-dom'
-import { useSettings } from '../engines/Settings'
-import { useTranslation } from 'react-i18next'
-import {  } from '@tauri-apps/api'
-import appIcon from '../../src-tauri/icons/icon.png'
 import { convertFileSrc } from '@tauri-apps/api/core'
+import * as globalShortcut from '@tauri-apps/plugin-global-shortcut'
 import round from 'lodash/round'
-import { RangeInput } from './Inputs'
+import { ReactNode, RefObject, SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+import { EpisodeData } from '..'
+import appIcon from '../../src-tauri/icons/icon.png'
 import { PlayerContext, useDB, usePlayer } from '../ContextProviders'
-import * as globalShortcut from "@tauri-apps/plugin-global-shortcut"
+import { useSettings } from '../engines/Settings'
+import { backwards as backwardsIcon, close as closeIcon, forward as forwardIcon, mute as muteIcon, pause as pauseIcon, play as playIcon, speedometer, volume as volumeIcon } from '../Icons'
+import { secondsToStr } from '../utils/utils'
+import { RangeInput } from './Inputs'
 
 export function AudioPlayerProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement>(null)

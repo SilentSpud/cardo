@@ -1,17 +1,18 @@
-import { useLocation } from 'react-router-dom'
-import { EpisodeData, PodcastData, SortCriterion } from '..'
+import { stringify } from 'lossless-json'
 import { ReactNode, SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react'
-import * as icons from '../Icons'
-import { parseXML, toastError } from '../utils/utils'
+import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { EpisodeData, PodcastData, SortCriterion } from '..'
+import appIcon from '../../src-tauri/icons/icon.png'
 import EpisodeCard from '../components/EpisodeCard'
 import { Checkbox, Switch, SwitchState, TimeInput } from '../components/Inputs'
+import { useDB, useSync } from '../ContextProviders'
 import { usePodcastSettings } from '../engines/Settings'
-import { useTranslation } from 'react-i18next'
-import { toast } from 'react-toastify'
-import appIcon from '../../src-tauri/icons/icon.png'
-import { sanitizeHTML } from '../utils/sanitize'
+import * as icons from '../Icons'
 import showMenu from '../utils/menu'
-import { useSync, useDB } from '../ContextProviders'
+import { sanitizeHTML } from '../utils/sanitize'
+import { parseXML, toastError } from '../utils/utils'
 
 const EPISODE_CARD_HEIGHT = 80 // min height
 const PRELOADED_EPISODES = 10 //
@@ -167,7 +168,7 @@ function PodcastPreview() {
 
   useEffect(() => {
     loadEpisodes()
-  }, [podcast.feedUrl, JSON.stringify(podcastSettings)])
+  }, [podcast.feedUrl, stringify(podcastSettings) as string])
 
   useEffect(() => {
     setTweakMenu(undefined)
