@@ -6,7 +6,7 @@ use base64::{engine::general_purpose, Engine as _};
 use rand::RngCore;
 use std::fs::File;
 use std::io::Write;
-use tauri::{command, Window, Emitter, Manager};
+use tauri::{command, Emitter, Manager, Window};
 use tauri_plugin_sql::{Migration, MigrationKind};
 
 const NONCE_SIZE: usize = 12; // 96-bit nonce

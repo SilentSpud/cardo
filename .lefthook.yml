@@ -1,0 +1,10 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - name: Format frontend
+      run: bun run format --no-color
+      stage_fixed: true
+    - name: Format backend
+      root: "src-tauri/"
+      run: cargo fmt --all -- --color never
+      stage_fixed: true

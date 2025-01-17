@@ -62,9 +62,9 @@ If you like this app you can contribute buying me a cofee or whatever you want, 
 
 ### If you are a developer
 
-It's also nice if you want to improve the app. The stack is Tauri v1 + React + Typescript + Tailwind.
+It's also nice if you want to improve the app. The stack is Tauri v2 + React + Typescript + Tailwind.
 
-To install dependencies `pnpm i` command should be enough. To setup a Tauri development environment check their [docs](https://tauri.app/v1/guides/getting-started/prerequisites), are pretty good.
+To install dependencies `bun i` command should be enough. To setup a Tauri development environment check their [docs](https://tauri.app/v1/guides/getting-started/prerequisites), are pretty good.
 In [tauri-conf.json](/src-tauri/tauri.conf.json) you should remove the updater configuration and windows certificate settings, or you will experiment errors of missing private key / certificate.
 
 Be free of summiting a PR if you get something good!
