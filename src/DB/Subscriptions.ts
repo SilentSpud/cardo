@@ -77,7 +77,7 @@ export function useSubscriptions(db: Database, subscriptionsEpisodes: DB['subscr
   }
 
   useEffect(() => {
-    db && loadLatestEpisodes()
+    if (db) loadLatestEpisodes()
   }, [db, numberOfDaysInNews])
 
   useEffect(() => {
@@ -85,7 +85,7 @@ export function useSubscriptions(db: Database, subscriptionsEpisodes: DB['subscr
 
     getAll().then((dbSubscriptions) => {
       setSubscriptions(dbSubscriptions)
-      fetchSubscriptionsAtStartup && updateFeeds(dbSubscriptions)
+      if (fetchSubscriptionsAtStartup) updateFeeds(dbSubscriptions)
     })
   }, [db])
 

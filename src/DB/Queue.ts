@@ -1,5 +1,4 @@
 import Database from '@tauri-apps/plugin-sql'
-import { parse, stringify } from 'lossless-json'
 import { useCallback, useEffect, useState } from 'react'
 import { EpisodeData, RawEpisodeData } from '..'
 
@@ -53,7 +52,7 @@ export function useQueue(db: Database) {
       WHERE description = 'queueOrder'
       `)
 
-    return query.length > 0 ? (parse(query[0].value) as number[]) : []
+    return query.length > 0 ? (JSON.parse(query[0].value) as number[]) : []
   }
 
   const updateOrder = async (newOrder: number[]) => {
@@ -64,7 +63,7 @@ export function useQueue(db: Database) {
       SET value = $1
       WHERE description = 'queueOrder'
       `,
-      [stringify(newOrder) as string],
+      [JSON.stringify(newOrder)],
     )
   }
 

@@ -2,7 +2,6 @@ import { appConfigDir, join } from '@tauri-apps/api/path'
 import { readTextFile, writeTextFile } from '@tauri-apps/plugin-fs'
 import * as os from '@tauri-apps/plugin-os'
 import merge from 'lodash/merge'
-import { parse, stringify } from 'lossless-json'
 import { createContext, ReactNode, useContext, useEffect, useRef, useState } from 'react'
 import colors from 'tailwindcss/colors'
 import { ColorTheme, RecursivePartial, Settings, SortCriterion, TailwindBaseColor } from '..'
@@ -39,7 +38,7 @@ export class PodcastSettings {
   }
 
   public static isDefault = (settings: PodcastSettings) => {
-    return stringify(settings) === stringify(new PodcastSettings())
+    return JSON.stringify(settings) === JSON.stringify(new PodcastSettings())
   }
 }
 
@@ -186,7 +185,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
   const readSettingsFromFile = async (): Promise<Settings | undefined> => {
     try {
-      return parse(await readTextFile(settingsFile.current)) as Settings
+      return JSON.parse(await readTextFile(settingsFile.current)) as Settings
     } catch {
       return undefined
     }
@@ -195,7 +194,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const writeSettingsFile = async (newSettings: Settings) => {
     if (!settingsFile.current) return
 
-    writeTextFile(settingsFile.current, stringify(newSettings, null, 2) as string)
+    writeTextFile(settingsFile.current, JSON.stringify(newSettings, null, 2))
   }
 
   const setOSInfo = async () => {

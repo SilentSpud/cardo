@@ -1,6 +1,5 @@
 import * as http from '@tauri-apps/plugin-http'
 import * as shell from '@tauri-apps/plugin-shell'
-import { parse, stringify } from 'lossless-json'
 import { GpodderUpdate, ProtocolFn, ServerGpodderUpdate, SubscriptionsUpdate } from '.'
 
 export async function login(url: string, onSucess: (user: string, password: string) => void) {
@@ -13,7 +12,7 @@ export async function login(url: string, onSucess: (user: string, password: stri
     method: 'POST',
   })
 
-  const reqData = parse(await req.text()) as { login: string; poll: { token: string; endpoint: string } }
+  const reqData = JSON.parse(await req.text()) as { login: string; poll: { token: string; endpoint: string } }
 
   shell.open(reqData.login) // throw explorer with nextcloud login page
 
@@ -24,14 +23,14 @@ export async function login(url: string, onSucess: (user: string, password: stri
       headers: {
         'Content-Type': 'application/json',
       },
-      body: stringify({
+      body: JSON.stringify({
         token: reqData.poll.token,
       }),
     })
 
     if (!pollRequest.ok) return // poll again
 
-    const pollData = parse(await pollRequest.text()) as { server: string; loginName: string; appPassword: string }
+    const pollData = JSON.parse(await pollRequest.text()) as { server: string; loginName: string; appPassword: string }
 
     onSucess(pollData.loginName, pollData.appPassword)
     clearInterval(interval)
@@ -53,7 +52,7 @@ export const nextcloudProtocol: ProtocolFn = function (creds) {
       },
     })
 
-    const reqData = parse(await req.text()) as { actions: ServerGpodderUpdate[] }
+    const reqData = JSON.parse(await req.text()) as { actions: ServerGpodderUpdate[] }
 
     return reqData.actions.map((update) => ({
       ...update,
@@ -74,7 +73,7 @@ export const nextcloudProtocol: ProtocolFn = function (creds) {
       },
     })
 
-    const reqData = parse(await req.text()) as SubscriptionsUpdate
+    const reqData = JSON.parse(await req.text()) as SubscriptionsUpdate
 
     return reqData
   }
@@ -91,7 +90,7 @@ export const nextcloudProtocol: ProtocolFn = function (creds) {
         Authorization: 'Basic ' + btoa(user + ':' + password),
         'Content-Type': 'application/json',
       },
-      body: stringify(
+      body: JSON.stringify(
         updates.map((update) => ({
           ...update,
           timestamp: new Date(update.timestamp).toISOString().split('.')[0],
@@ -116,7 +115,7 @@ export const nextcloudProtocol: ProtocolFn = function (creds) {
         Authorization: 'Basic ' + btoa(user + ':' + password),
         'Content-Type': 'application/json',
       },
-      body: stringify(updates),
+      body: JSON.stringify(updates),
     })
 
     if (!req.ok) {

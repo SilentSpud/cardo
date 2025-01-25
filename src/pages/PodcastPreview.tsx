@@ -1,4 +1,3 @@
-import { stringify } from 'lossless-json'
 import { ReactNode, SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
@@ -168,7 +167,7 @@ function PodcastPreview() {
 
   useEffect(() => {
     loadEpisodes()
-  }, [podcast.feedUrl, stringify(podcastSettings) as string])
+  }, [podcast.feedUrl, JSON.stringify(podcastSettings)])
 
   useEffect(() => {
     setTweakMenu(undefined)

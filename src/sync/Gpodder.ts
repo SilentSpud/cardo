@@ -1,5 +1,4 @@
 import * as http from '@tauri-apps/plugin-http'
-import { parse, stringify } from 'lossless-json'
 import { GpodderUpdate, ProtocolFn, ServerGpodderUpdate, SubscriptionsUpdate } from '.'
 
 export async function login(url: string, user: string, password: string): Promise<boolean> {
@@ -38,7 +37,7 @@ export const gpodderProtocol: ProtocolFn = function (creds) {
       },
     })
 
-    const reqData = parse(await req.text()) as { actions: ServerGpodderUpdate[] }
+    const reqData = JSON.parse(await req.text()) as { actions: ServerGpodderUpdate[] }
 
     return reqData.actions.map((update: ServerGpodderUpdate) => ({
       ...update,
@@ -64,7 +63,7 @@ export const gpodderProtocol: ProtocolFn = function (creds) {
       },
     })
 
-    const reqData = parse(await req.text()) as SubscriptionsUpdate
+    const reqData = JSON.parse(await req.text()) as SubscriptionsUpdate
 
     return reqData
   }
@@ -81,7 +80,7 @@ export const gpodderProtocol: ProtocolFn = function (creds) {
         Authorization: 'Basic ' + btoa(user + ':' + password),
         'Content-Type': 'application/json',
       },
-      body: stringify(
+      body: JSON.stringify(
         updates.map((update) => ({
           ...update,
           timestamp: new Date(update.timestamp).toISOString(),
@@ -106,7 +105,7 @@ export const gpodderProtocol: ProtocolFn = function (creds) {
         Authorization: 'Basic ' + btoa(user + ':' + password),
         'Content-Type': 'application/json',
       },
-      body: stringify(updates),
+      body: JSON.stringify(updates),
     })
 
     if (!req.ok) {

@@ -1,3 +1,4 @@
+import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 import pluginJs from '@eslint/js'
 import pluginJsxA11y from 'eslint-plugin-jsx-a11y'
 import pluginReact from 'eslint-plugin-react'
@@ -6,10 +7,9 @@ import pluginReactRefresh from 'eslint-plugin-react-refresh'
 import globals from 'globals'
 import pluginTs from 'typescript-eslint'
 
-/** @type {import('eslint').Linter.Config[]} */
 export default [
   { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
-  { ignores: ['src-tauri/'] },
+  { ignores: ['src-tauri/', 'dist/'] },
   { languageOptions: { globals: globals.browser } },
   {
     settings: {
@@ -17,15 +17,7 @@ export default [
     },
   },
   pluginJs.configs.recommended,
-  ...pluginTs.configs.recommendedTypeChecked,
-  {
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
-  },
+  ...pluginTs.configs.recommended,
   pluginReact.configs.flat.recommended,
   pluginReact.configs.flat['jsx-runtime'],
   {
@@ -41,8 +33,11 @@ export default [
   {
     rules: {
       '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-expressions': 'warn',
       'react-refresh/only-export-components': 'warn',
       'react-hooks/exhaustive-deps': 0,
+      'jsx-a11y/media-has-caption': 'off'
     },
   },
-]
+] satisfies FlatConfig.Config[]
