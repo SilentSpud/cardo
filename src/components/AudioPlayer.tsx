@@ -2,6 +2,7 @@ import { convertFileSrc } from '@tauri-apps/api/core'
 import * as globalShortcut from '@tauri-apps/plugin-global-shortcut'
 import round from 'lodash/round'
 import { ReactNode, RefObject, SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react'
+import { useHotkeys } from 'react-hotkeys-hook'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { EpisodeData } from '..'
@@ -229,6 +230,18 @@ function VolumeControl({ audioRef }: { audioRef: RefObject<HTMLAudioElement> }) 
     setIsMuted(volume === 0)
   }, [volume])
 
+  // #region Volume hotkeys
+  useHotkeys('ctrl+up', () => {
+    setVolume((prev) => Math.min(prev + 0.1, 1))
+  })
+  useHotkeys('ctrl+down', () => {
+    setVolume((prev) => Math.max(prev - 0.1, 0))
+  })
+  useHotkeys('ctrl+space', () => {
+    setIsMuted((prev) => !prev)
+  })
+  // #endregion
+
   return (
     <div className="flex items-center">
       <button className="flex hover:text-accent-6" onClick={() => setIsMuted(!isMuted)}>
@@ -240,7 +253,7 @@ function VolumeControl({ audioRef }: { audioRef: RefObject<HTMLAudioElement> }) 
   )
 }
 
-function AudioPlayer({ className = '' }) {
+function AudioPlayer({ className = '' }: { className?: string }) {
   const [position, setPosition] = useState(0)
   const [duration, setDuration] = useState(0)
   const { history, queue, downloads } = useDB()
@@ -322,6 +335,12 @@ function AudioPlayer({ className = '' }) {
       setDuration(audioRef.current.duration)
     }
   }
+
+  // #region HOTKEYS
+  useHotkeys('space', handlePlayPause, { enableOnFormTags: false })
+  useHotkeys('ctrl+right', () => changeTime(stepForward, true), { enableOnFormTags: false })
+  useHotkeys('ctrl+left', () => changeTime(-1 * stepBackwards, true), { enableOnFormTags: false })
+  // #endregion
 
   return (
     <>

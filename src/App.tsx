@@ -1,6 +1,7 @@
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
 import { platform } from '@tauri-apps/plugin-os'
 import { lazy, Suspense, useEffect, useState } from 'react'
+import { HotkeysProvider } from 'react-hotkeys-hook'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -47,35 +48,37 @@ const App = () => {
   return (
     <div className={`flex h-screen w-full flex-col overflow-hidden border-[1px] border-primary-7 bg-primary-9 ${roundedCorners && 'rounded-lg'}`}>
       <BrowserRouter>
-        <SettingsProvider>
-          <DBProvider>
-            <AudioPlayerProvider>
-              <SyncProvider>
-                <TitleBar />
-                <ToastContainer />
-                <div className="flex h-full w-full justify-start overflow-hidden">
-                  <LeftMenu />
-                  <div className="flex h-full w-full flex-col overflow-y-hidden">
-                    <SearchBar />
-                    <div className="flex h-full overflow-y-auto scroll-smooth border-t border-primary-8">
-                      <Suspense>
-                        <Routes>
-                          <Route path="/" element={<HomePage />} />
-                          <Route path="/preview" element={<PodcastPreview />} />
-                          <Route path="/episode-preview" element={<EpisodePreview />} />
-                          <Route path="/settings" element={<Settings />} />
-                          <Route path="/queue" element={<QueuePage />} />
-                          <Route path="/downloads" element={<DownloadsPage />} />
-                        </Routes>
-                      </Suspense>
+        <HotkeysProvider>
+          <SettingsProvider>
+            <DBProvider>
+              <AudioPlayerProvider>
+                <SyncProvider>
+                  <TitleBar />
+                  <ToastContainer />
+                  <div className="flex h-full w-full justify-start overflow-hidden">
+                    <LeftMenu />
+                    <div className="flex h-full w-full flex-col overflow-y-hidden">
+                      <SearchBar />
+                      <div className="flex h-full overflow-y-auto scroll-smooth border-t border-primary-8">
+                        <Suspense>
+                          <Routes>
+                            <Route path="/" element={<HomePage />} />
+                            <Route path="/preview" element={<PodcastPreview />} />
+                            <Route path="/episode-preview" element={<EpisodePreview />} />
+                            <Route path="/settings" element={<Settings />} />
+                            <Route path="/queue" element={<QueuePage />} />
+                            <Route path="/downloads" element={<DownloadsPage />} />
+                          </Routes>
+                        </Suspense>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <AudioPlayer className="h-28 w-full flex-shrink-0" />
-              </SyncProvider>
-            </AudioPlayerProvider>
-          </DBProvider>
-        </SettingsProvider>
+                  <AudioPlayer className="h-28 w-full flex-shrink-0" />
+                </SyncProvider>
+              </AudioPlayerProvider>
+            </DBProvider>
+          </SettingsProvider>
+        </HotkeysProvider>
       </BrowserRouter>
     </div>
   )

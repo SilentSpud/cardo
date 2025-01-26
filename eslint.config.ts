@@ -1,5 +1,5 @@
-import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 import pluginJs from '@eslint/js'
+import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint'
 import pluginJsxA11y from 'eslint-plugin-jsx-a11y'
 import pluginReact from 'eslint-plugin-react'
 import pluginReactHooks from 'eslint-plugin-react-hooks'
@@ -34,10 +34,10 @@ export default [
     rules: {
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-unused-expressions': 'warn',
+      '@typescript-eslint/no-unused-expressions': ['warn', { allowShortCircuit: true, allowTernary: true }],
       'react-refresh/only-export-components': 'warn',
       'react-hooks/exhaustive-deps': 0,
-      'jsx-a11y/media-has-caption': 'off'
+      'jsx-a11y/media-has-caption': 'off',
     },
   },
 ] satisfies FlatConfig.Config[]
