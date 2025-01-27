@@ -6,7 +6,7 @@ import { login } from '../../sync/Nextcloud'
 import { saveCreds, toastError } from '../../utils/utils'
 
 export function NextcloudSettings() {
-  const interval = useRef(0)
+  const interval = useRef<ReturnType<typeof setInterval>>()
   const { t } = useTranslation()
   const { setLoggedIn } = useSync()
   const {

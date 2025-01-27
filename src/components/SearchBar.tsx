@@ -16,7 +16,7 @@ function SearchBar() {
   } = useDB()
   const [searchMode, setSearchMode_] = useState<'subscriptions' | 'podcasts' | 'current'>(subscriptions.length > 0 ? 'subscriptions' : 'podcasts')
   const [noResults, setNoResults] = useState(false)
-  const timeout = useRef(0)
+  const timeout = useRef<ReturnType<typeof setInterval>>()
   const inputRef = useRef<HTMLInputElement>(null)
   const resultsRef = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()

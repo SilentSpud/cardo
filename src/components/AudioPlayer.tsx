@@ -17,6 +17,7 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement>(null)
   const [playing, setPlaying] = useState<EpisodeData>()
   const { history, misc, downloads } = useDB()
+  const [paused, setPaused] = useState(true)
 
   const loadLastPlayed = async () => {
     if (audioRef.current == null) return
@@ -65,11 +66,13 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
     }
 
     audioRef.current.play()
+    setPaused(false)
   }
 
   const pause = () => {
     if (audioRef.current) {
       audioRef.current.pause()
+      setPaused(true)
     }
   }
 
@@ -100,7 +103,7 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
         play,
         reload: () => playing && load(playing),
         pause,
-        paused: audioRef.current?.paused ?? false,
+        paused,
         playing,
         onExit,
         quit,
@@ -257,7 +260,7 @@ function AudioPlayer({ className = '' }: { className?: string }) {
   const [position, setPosition] = useState(0)
   const [duration, setDuration] = useState(0)
   const { history, queue, downloads } = useDB()
-  const { audioRef, play, playing, quit } = usePlayer()
+  const { audioRef, play, pause, playing, quit } = usePlayer()
   const navigate = useNavigate()
   const [
     {
@@ -299,7 +302,7 @@ function AudioPlayer({ className = '' }: { className?: string }) {
 
   const handlePlayPause = () => {
     if (audioRef.current) {
-      audioRef.current.paused ? audioRef.current.play() : audioRef.current.pause()
+      audioRef.current.paused ? play() : pause()
     }
   }
 
