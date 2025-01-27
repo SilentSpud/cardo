@@ -1,5 +1,6 @@
 import pluginJs from '@eslint/js'
 import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint'
+import pluginImport from 'eslint-plugin-import'
 import pluginJsxA11y from 'eslint-plugin-jsx-a11y'
 import pluginReact from 'eslint-plugin-react'
 import pluginReactHooks from 'eslint-plugin-react-hooks'
@@ -14,10 +15,16 @@ export default [
   {
     settings: {
       react: { version: 'detect' },
+      'import/resolver': {
+        typescript: true,
+        node: true,
+      },
     },
   },
   pluginJs.configs.recommended,
   ...pluginTs.configs.recommended,
+  pluginImport.flatConfigs.recommended,
+  pluginImport.flatConfigs.typescript,
   pluginReact.configs.flat.recommended,
   pluginReact.configs.flat['jsx-runtime'],
   {
